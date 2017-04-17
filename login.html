@@ -33,61 +33,61 @@
 <script src="js/jquery-3.2.0.js"></script>
 <script src="js/layer.js"></script>
 <script>    
-		var active=false;
-		if(!active){
-	        $("#username").val(window.localStorage.getItem("username"));
-            if(window.localStorage.getItem("ps")){
-		        $("#ps").val(window.localStorage.getItem("ps"));
-		        $("#rem").attr("checked",true);
-	        }else{
-		        $("#ps").val("");
-		        $("#rem").attr("checked",false);
-	        } 
-		}else{
-			$("#username").val(window.localStorage.getItem("username"));
-		    $("#ps").val(window.localStorage.getItem("ps"));
-		    $("#rem").attr("checked",true);
-		}
-        
+var active=false;
+if(!active){
+        $("#username").val(window.localStorage.getItem("username"));
+	if(window.localStorage.getItem("ps")){
+		$("#ps").val(window.localStorage.getItem("ps"));
+		$("#rem").attr("checked",true);
+	}else{
+		$("#ps").val("");
+		$("#rem").attr("checked",false);
+	} 
+}else{
+	$("#username").val(window.localStorage.getItem("username"));
+	$("#ps").val(window.localStorage.getItem("ps"));
+	$("#rem").attr("checked",true);
+}
 
-		$("#submit1").click(function(){
-			var dataObj={"userName":$("#username").val(),"password":$("#ps").val()};			
-			$.ajax({
-				type:"GET",
-				url:"http://192.168.15.30:808/api/StudentInfo/Login",
-				dataType:"text",
-				data: $.param(dataObj),
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                    ,'Authorization':''
-                },
-				success:function(data){
-					var datas=eval("("+data+")");
-					console.log(datas);
-				    console.log(datas.Msg);
-				    console.log(datas.Data.ChannelId);
-                    window.localStorage.setItem("ChannelId",datas.Data.ChannelId);
-                    window.localStorage.setItem("username",$("#username").val());
-                    if(datas.Result==0){
-                	    if($("#rem").is(':checked')){
-                	    	active=true;      	    	
-	                   	    window.localStorage.setItem("ps",$("#ps").val());
-	                   	    location.href='information.html';
-                    	}else{
-                    		active=false;                    		
-                    		location.href='information.html';
-                    	}
-                	}else{
-                		layer.open({
-						    content: datas.Msg,
-						    skin: "msg",
-						    time: 2 
-						});
-						$("#ps").val("")
-                	}	
-                }  
-			})
-		})
+
+$("#submit1").click(function(){
+	var dataObj={"userName":$("#username").val(),"password":$("#ps").val()};			
+	$.ajax({
+		type:"GET",
+		url:"http://192.168.15.30:808/api/StudentInfo/Login",
+		dataType:"text",
+		data: $.param(dataObj),
+		headers: {
+		'Content-Type': 'application/x-www-form-urlencoded'
+		,'Authorization':''
+	},
+	success:function(data){
+		var datas=eval("("+data+")");
+		console.log(datas);
+		console.log(datas.Msg);
+		console.log(datas.Data.ChannelId);
+		window.localStorage.setItem("ChannelId",datas.Data.ChannelId);
+		window.localStorage.setItem("username",$("#username").val());
+		if(datas.Result==0){
+			if($("#rem").is(':checked')){
+			active=true;      	    	
+			window.localStorage.setItem("ps",$("#ps").val());
+			location.href='information.html';
+			}else{
+			active=false;                    		
+			location.href='information.html';
+			}
+		}else{
+			layer.open({
+				content: datas.Msg,
+				skin: "msg",
+				time: 2 
+			});
+			$("#ps").val("")
+		}	
+	}  
+	})
+})
 		
 	
 </script>
