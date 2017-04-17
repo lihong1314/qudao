@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<title></title>
+	<script src="js/rem.js"></script>
+	<link rel="stylesheet" href="css/public.css">
+	<link rel="stylesheet" href="css/head.css">
+	<link rel="stylesheet" href="css/information.css">
+</head>
+<body>
+    <div class="head">
+    	<ul>
+			<li class="head-left"><img class="logo" src="img/logo.png" alt=""></li>
+			<li class="head-right" id="exit"><img src="img/exit.png" alt=""></li>
+			<li class="head-right" id="xiugaibtn"><img src="img/xiugai.png" alt=""></li>
+		</ul>
+    </div>
+	
+	<!-- 今日收益 -->
+    <div class="todyxiaoyi">
+    	<div class="todyshouyi tody-i">
+    		<h2>今日收益（元）</h2>
+    		<h1>￥<span id="EarningsToday">0</span></h1>
+    		<h3>昨日收益（元）</h3>
+    		<h3 class="num">￥<span id="EarningsYesterDay">0</span></h3>
+    		<div class="line"></div>
+            <h3>本月收益（元）</h3>
+    		<h3 class="num">￥<span id="EarningsMonth">0</span></h3>
+    		<h3>累计收益（元）</h3>
+    		<h3 class="num">￥<span id="EarningsAll">0</span></h3>
+    	</div>
+    	<div class="todychengdan tody-i">
+    		<h2>今日成单（件）</h2>
+    		<h1 id="OrdersToday">0</h1>
+    		<h3>昨日成单（件）</h3>
+    		<h3 id="OrderYesterDay" class="num">0</h3>
+    		<div class="line"></div>
+            <h3>本月成单数（件）</h3>
+    		<h3 id="OrdersMonth" class="num">0</h3>
+    		<h3>累计成单数（件）</h3>
+    		<h3 id="OrdersAll" class="num">0</h3>
+    	</div>
+    </div>
+    
+    <!-- 今日客户 -->
+    <div class="kehu">
+    	<ul class="todykehu">
+	    	<li> <img src="img/kehu.png" alt=""></li>
+	    	<li> 
+	    	    <h3>今日客户（人）</h3>
+	            <h2 id="StudentNum">0</h2>
+	            <h3>昨日客户（人）</h3>
+	            <h2 id="YesterDayStudentNum" style="margin-bottom: 0">0</h2>
+	    	</li>
+	    </ul>
+	    <ul class="todykehu">
+	    	<li> <img src="img/kehu2.png" alt=""></li>
+	    	<li> 
+	    	    <h3>本月客户（人）</h3>
+	            <h2 id="MonthStudentNum">0</h2>
+	            <h3>累计客户（人）</h3>
+	            <h2 id="StudentAll" style="margin-bottom: 0">0</h2>
+	    	</li>
+	    </ul>
+    </div>
+
+    <!-- 今日试听 -->
+    <div class="kehu kehu2" >
+    	<ul class="todykehu">
+	    	<li> <img src="img/shiting.png" alt=""></li>
+	    	<li> 
+	    	    <h3>今日试听（人）</h3>
+	            <h2 id="TryLessToday">0</h2>
+	            <h3>昨日试听（人）</h3>
+	            <h2 id="YesterTryLess" style="margin-bottom: 0">0</h2>
+	    	</li>
+	    </ul>
+	    <ul class="todykehu">
+	    	<li> <img src="img/shiting2.png" alt=""></li>
+	    	<li> 
+	    	    <h3>本月试听（人）</h3>
+	            <h2 id="MonthTryLess">0</h2>
+	            <h3>累计试听（人）</h3>
+	            <h2 id="TryLessAll" style="margin-bottom: 0">0</h2>
+	    	</li>
+	    </ul>
+    </div>
+
+    <!-- 底部 -->
+    <footer>
+    	<ul>
+    		<li class="information-active"></li>
+    		<li class="line"></li>
+    		<li class="caidan" onclick="location.href='kehu.html'"></li>
+    	</ul>
+    </footer>
+
+
+
+    <!-- 修改密码 -->
+    <div class="zhezhao" id="zhezhao">
+	    	<div class="psxiugai">
+	    	    <h2>修改密码</h2>
+	    	    <ul>
+		    		<li><img src="img/ps.png" alt=""></li>
+		    		<li><input id="ps" type="password" name="ps" placeholder="输入旧密码" ></li>
+	    	    </ul>
+	    	    <ul>
+		    		<li><img src="img/ps2.png" alt=""></li>
+		    		<li><input id="ps2" type="password" name="ps2" placeholder="输入新密码" ></li>
+	    	    </ul>
+	    	    <ul>
+		    		<li><img src="img/ps2.png" alt=""></li>
+		    		<li><input id="ps3" type="password" name="ps3" placeholder="确认新密码" ></li>
+	    	    </ul>
+	    	    <div class="submitbox">
+	    	        <button id="submit1" type="button" >修改密码</button>
+	    	    </div>
+	    	</div>
+    	<div class="zhezhaobox"></div>
+    </div>
+</body>
+<script src="js/jquery-3.2.0.js"></script>
+<script src="js/layer.js"></script>
+<script src="js/head.js"></script>
+<script>
+
+	$.ajax({
+		type:"GET",
+		url:"http://192.168.15.30:808/api/StudentInfo/GetInfoSumary",
+		data:{"ChannelId":window.localStorage.getItem("ChannelId"),"pageIndex":1,"pageSize":5},
+		dataType:"json",
+		success:function(data){
+			console.log(data);
+			$("#EarningsToday").html(data.Data.EarningsToday);
+			$("#EarningsMonth").html(data.Data.EarningsMonth);
+			$("#EarningsAll").html(data.Data.EarningsAll);
+			$("#OrdersToday").html(data.Data.OrdersToday);
+			$("#OrdersMonth").html(data.Data.OrdersMonth);
+			$("#OrdersAll").html(data.Data.OrdersAll);
+			$("#StudentNum").html(data.Data.StudentNum);
+			$("#StudentAll").html(data.Data.StudentAll);
+			$("#TryLessAll").html(data.Data.TryLessAll);
+			$("#StudentNum").html(data.Data.StudentNum);
+			$("#EarningsYesterDay").html(data.Data.EarningsYesterDay);
+			$("#OrderYesterDay").html(data.Data.OrderYesterDay);
+			$("#YesterDayStudentNum").html(data.Data.YesterDayStudentNum);
+			$("#MonthStudentNum").html(data.Data.MonthStudentNum);
+			$("#YesterTryLess").html(data.Data.YesterTryLess);
+			$("#MonthTryLess").html(data.Data.MonthTryLess);
+		}
+	})
+</script>
+</html>

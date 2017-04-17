@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<title></title>
+	<script src="js/rem.js"></script>
+	<link rel="stylesheet" href="css/public.css">
+	<link rel="stylesheet" href="css/head.css">
+	<link rel="stylesheet" href="css/kehu.css">
+	<script src="js/jquery-3.2.0.js"></script>
+	<script type="application/javascript" src="js/iscroll.js"></script>
+    <script src="js/layer.js"></script>
+    <script src="js/head.js"></script>
+    <script>
+
+    //创建卡片
+    function newcard(data,index){
+    	var pur=data.DataResult[index].Purpose || 0;
+        var str="";
+        var color1="";
+
+        switch(pur){
+            case 0:str="待邀约";color1="#fca600";break;
+            case 1:str="待跟踪";color1="#f0823a";break;
+            case 2:str="长期跟踪";color1="#3db6ff";break;
+            case 3:str="无意向";color1="#ea5851";break;
+            case 4:str="待签约";color1="#99999";break;
+            case 5:str="已签约";color1="#4bcda0";break;
+            default:alert("签约状态错误");
+        }
+
+
+        //电话接通状态
+        var phone=data.DataResult[index].PhoneState || 5;
+        var str2="";
+        var color2="";
+        switch(phone){
+            case 1:str2="未接通";color2="#fca600";break;
+            case 2:str2="已接通";color2="#4bcda0";break;
+            case 3:str2="关机";color2="#f0823a";break;
+            case 4:str2="无法接通";color2="#ea5851";break;
+            case 5:str2="空号";color2="#ea5851";break;
+            default:console.log("接通状态错误");
+        }
+
+
+        var ischeck=data.DataResult[index].IsCheckOK || -1;
+        var str3="";
+        var color3="";
+        switch(ischeck){
+            case 0:str3="失败";color3="#ea5851";break;
+            case 1:str3="成功";color3="#3db6ff";break;
+            case -1:str3="本次未调试";color3="#999";break;
+            default:console.log("调试状态错误");
+        }
+
+        var LessonTime,DealState,RealName,Mobile,DebugCreateTime,LastCallTime,ReturnTime;
+        LessonTime=data.DataResult[index].LessonTime=="-"?"":data.DataResult[index].LessonTime;
+        DealState=data.DataResult[index].DealState=="无"?"暂未约课":data.DataResult[index].DealState;
+        RealName=data.DataResult[index].RealName ||"匿名";
+        Mobile=data.DataResult[index].Mobile || "";
+        DebugCreateTime=data.DataResult[index].DebugCreateTime=="-"?"":data.DataResult[index].DebugCreateTime;
+        LastCallTime=data.DataResult[index].LastCallTime=="-"?"":data.DataResult[index].LastCallTime;
+        ReturnTime=data.DataResult[index].ReturnTime=="-"?"":data.DataResult[index].ReturnTime;
+        if(LessonTime==""){
+            DealState="暂未约课";
+	        DebugCreateTime="";
+	        LastCallTime="";
+	        ReturnTime="";
+	        str="待签约";
+	        color1="#999"
+	        str2="未接通";
+	        color2="";
+	        str3="本次未调试";
+	        color3="#999"
+        }
+        
+
+        var card='<li><div class="listbox">'+
+				'<ul class="list-title">'+
+					'<li><span class="LessonTime">'+LessonTime+'</span> （<span class="DealState">'+DealState+'</span>）</li>'+
+					'<li class="zhuangtai"><span class="Purpose" style="color:'+color1+'">'+str+'</span></li>'+
+				'</ul>'+
+				'<div class="list-content">'+
+					'<div class="list-photo">'+
+						'<div class="photo">'+
+							'<img src="img/photo.png" alt="">'+
+						'</div>'+
+						'<p class="RealName">'+RealName+'</p>'+
+					'</div>'+
+					'<ul class="list-con">'+
+						'<li>'+
+						    '<p>电话: <span class="Mobile">'+Mobile+'</span> </p>'+
+						    '<div> <span class="PhoneState" style="color:'+color2+'">'+str2+'</span></div>'+
+						'</li>'+
+						'<li>'+
+						    '<p>调试: <span class="DebugCreateTime">'+DebugCreateTime+'</span></p> '+
+						    '<div class="phone-no IsCheckOk" style="color:'+color3+'">'+str3+' </div>'+
+						'</li>'+
+						'<li class="time">'+
+							'<p>'+
+							    '<img src="img/uptime.png" alt="">'+
+	                            '<span class="LastCallTime">'+LastCallTime+'</span>'+
+							'</p>'+
+							'<div>'+
+							    '<img src="img/nowtime.png" alt="">'+
+							    '<span class="ReturnTime">'+ReturnTime+'</span>'+
+							'</div>'+
+						'</li>'+
+					'</ul>'+
+				'</div>'+
+			'</div></li>';
+        return card;
+    }
+   
+
+	
+	
+
+var myScroll,
+	pullDownEl, pullDownOffset,
+	pullUpEl, pullUpOffset,
+	generatedCount = 0;
+
+	function pullDownAction () {}
+
+	function pullUpAction () {
+		
+		$.ajax({
+			type:"GET",
+			url:"http://192.168.15.30:808/api/StudentInfo/GetStudentInfo",
+			data:{"ChannelId":window.localStorage.getItem("ChannelId"),"pageIndex":pageNum,"pageSize":5},
+			dataType:"json",
+			success:function(data){
+				console.log(data)
+				if(data.DataResult.length==0){
+                    layer.open({
+					    content: "没有更多信息了",
+					    skin: "msg",
+					    time: 2 
+					});
+				}else if(data.DataResult.length<5){
+	            	var div='';
+		            for(var i=0;i<data.DataResult.length;i++){
+		                div+=newcard(data,i);
+		            }
+		            $(div).appendTo($("#thelist"));
+	            }else{
+	            	var div='';
+		            for(var i=0;i<5;i++){
+		                div+=newcard(data,i); 
+		            }
+		            $(div).appendTo($("#thelist"));
+	            }
+                pageNum++;
+                setTimeout(function(){
+		            myScroll.refresh();
+		        })
+			}
+		})
+        
+		
+	}
+
+
+	function loaded() {
+		pullDownEl = document.getElementById('pullDown');
+		pullDownOffset = pullDownEl.offsetHeight;
+		pullUpEl = document.getElementById('pullUp');	
+		pullUpOffset = pullUpEl.offsetHeight;
+		
+		myScroll = new iScroll('wrapper', {
+			scrollbarClass: 'myScrollbar', /* 重要样式 */
+			useTransition: false, /* 此属性不知用意，本人从true改为false */
+			topOffset: pullDownOffset,
+			onRefresh: function () {
+				if (pullDownEl.className.match('loading')) {
+					pullDownEl.className = '';
+					//pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+				} else if (pullUpEl.className.match('loading')) {
+					pullUpEl.className = '';
+					//pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+				}
+			},
+			onScrollMove: function () {
+				if (this.y > 5 && !pullDownEl.className.match('flip')) {
+					pullDownEl.className = 'flip';
+					//pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+					this.minScrollY = 0;
+				} else if (this.y < 5 && pullDownEl.className.match('flip')) {
+					pullDownEl.className = '';
+					//pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+					this.minScrollY = -pullDownOffset;
+				} else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+					pullUpEl.className = 'flip';
+					//pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+					this.maxScrollY = this.maxScrollY;
+				} else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+					pullUpEl.className = '';
+					//pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+					this.maxScrollY = pullUpOffset;
+				}
+			},
+			onScrollEnd: function () {
+				if (pullDownEl.className.match('flip')) {
+					pullDownEl.className = 'loading';
+					//pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';				
+					pullDownAction();	// Execute custom function (ajax call?)
+				} else if (pullUpEl.className.match('flip')) {
+					pullUpEl.className = 'loading';
+					//pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';				
+					pullUpAction();	// Execute custom function (ajax call?)
+				}
+			}
+		});
+		
+		setTimeout(function () { document.getElementById('wrapper').style.left = '0'; }, 800);
+	}
+
+
+    document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+    document.addEventListener('DOMContentLoaded', loaded, false); 
+
+
+
+    //请求数据
+	var pageNum=1;
+	$.ajax({
+		type:"GET",
+		url:"http://192.168.15.30:808/api/StudentInfo/GetStudentInfo",
+		data:{"ChannelId":window.localStorage.getItem("ChannelId"),"pageIndex":pageNum,"pageSize":5},
+		dataType:"json",
+		success:function(data){
+            console.log(data.DataResult.length);
+            console.log(data);
+            if(data.TotalCount==0){
+                $("#pullUp").hide();
+                $("#no-kehubox").show();
+            }else{
+            	$("#pullUp").show();
+                $("#no-kehubox").hide();
+
+	            var div='';
+	            for(var i=0;i<5;i++){
+	                div+=newcard(data,i);
+	            }
+	            $(div).appendTo($("#thelist"));
+	            pageNum++;
+	            setTimeout(function(){
+	            	myScroll.refresh();
+	            },500)
+            }
+            
+		}
+	})
+
+</script>
+</head>
+<body>
+    <div class="head">
+    	<ul>
+			<li class="head-left"><img class="logo" src="img/logo.png" alt=""></li>
+			<li class="head-right" id="exit"><img src="img/exit.png" alt=""></li>
+			<li class="head-right" id="xiugaibtn"><img src="img/xiugai.png" alt=""></li>
+		</ul>
+    </div>
+	
+
+<div id="wrapper">
+	<div id="scroller">
+		<div id="pullDown">
+			<span class="pullDownIcon"></span><span class="pullDownLabel"></span>
+		</div>
+
+		<ul id="thelist" class="contentbox">
+		
+		</ul>
+
+        <div id="pullUp">
+			<img src="img/break.png" alt="">
+		</div>
+	</div>
+</div>
+    
+    <div id="no-kehubox">
+        <div id="no-kehu"></div>
+    	暂时没有客户信息
+    </div>
+
+    <footer>
+    	<ul>
+    		<li class="information" onclick="location.href='information.html'"></li>
+    		<li class="line"></li>
+    		<li class="caidan-active"></li>
+    	</ul>
+    </footer>
+    <!-- 修改密码 -->
+    <div class="zhezhao" id="zhezhao">
+        <form action="" method="post">
+	    	<div class="psxiugai">
+	    	    <h2>修改密码</h2>
+	    	    <ul>
+		    		<li><img src="img/ps.png" alt=""></li>
+		    		<li><input id="ps" type="password" name="ps" placeholder="输入旧密码" ></li>
+	    	    </ul>
+	    	    <ul>
+		    		<li><img src="img/ps2.png" alt=""></li>
+		    		<li><input id='ps2' type="password" name="ps2" placeholder="输入新密码" ></li>
+	    	    </ul>
+	    	    <ul>
+		    		<li><img src="img/ps2.png" alt=""></li>
+		    		<li><input id="ps3" type="password" name="ps2" placeholder="确认新密码" ></li>
+	    	    </ul>
+	    	    <div class="submitbox">
+	    	        <button id="submit1" type="button" >修改密码</button>
+	    	    </div>
+	    	</div>
+    	</form>
+    	<div class="zhezhaobox"></div>
+    </div>
+</body>
+
+</html>

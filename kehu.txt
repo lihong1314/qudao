@@ -1,0 +1,35 @@
+{
+	"TotalCount":10,
+	"DataResult":[
+        {
+            "StudentId":"18002",
+            "RealName":"Anny",
+            "Gender":"0",
+            "LessonTime":"2017-1-1",
+            "DealState":"课前未处理",
+            "Purpose":5,
+            "Mobile":"13850071303",
+            "PhoneState":"2",
+            "ReturnTime":"2017-2-2",
+            "DebugCreateTime":"2017-1-2",
+            "IsCheckOk":-1,
+            "LastCallTime":"2017-1-1"
+        },
+        {
+            "StudentId":"18001",
+            "RealName":"小小孙",
+            "Gender":"1",
+            "LessonTime":"2017-4-5",
+            "DealState":"课前已处理",
+            "Purpose":3,
+            "Mobile":"13838383838",
+            "PhoneState":"1",
+            "ReturnTime":"2017-5-5",
+            "DebugCreateTime":"2017-5-6",
+            "IsCheckOk":1,
+            "LastCallTime":"2017-6-6"
+        }
+	],
+	"Result":0,
+	"Msg":"成功"
+}

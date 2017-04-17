@@ -1,0 +1,22 @@
+{
+	"Data":{
+	    "EarningsToday":10,
+	    "OrdersToday":20,
+	    "EarningsMonth":30,
+	    "OrdersMonth":40,
+	    "EarningsAll":50,
+	    "OrdersAll":60,
+	    "StudentNum":70,
+	    "StudentAll":80,
+	    "TryLessToday":90,
+	    "TryLessAll":110,
+	    "EarningsYesterDay":120,
+	    "OrderYesterDay":130,
+	    "YesterDayStudentNum":140,
+	    "MonthStudentNum":150,
+	    "YesterTryLess":160,
+	    "MonthTryLess":17
+	},
+	"Result":0,
+	"Msg":"成功"
+}

@@ -1,0 +1,75 @@
+html{
+	font-size: 20px;
+}
+.loginbox{
+	width:12.01rem;
+	height:11.01rem;
+	background: #fff;
+	border-radius: 0.17rem;
+	position: fixed;
+	left: 0;
+	top:0;
+	right:0;
+	bottom:0;
+    margin:auto;
+}
+.loginbox .logo{
+    margin-top: 0.58rem;
+    margin-bottom: 0.55rem;
+	text-align: center;
+}
+.loginbox .logo img{
+	width:4.71rem;
+	height: 1.41rem;
+}
+.loginbox .lis{
+	width:100%;
+	height:0.88rem;
+	border-top: 1px solid #ddd;
+	padding-top: 0.52rem;
+	padding-bottom: 0.3rem;
+	overflow: hidden;
+	line-height: 1.18rem;
+}
+.loginbox .lis li{
+	float:left;
+	color: #ccc;
+	font-size: 0.6rem;
+}
+.loginbox .lis .tubiao{
+	margin-left: 1.07rem;
+	margin-right: 1.13rem;
+}
+.loginbox .lis .tubiao img{
+	width: 0.55rem;
+	height: 0.68rem;
+}
+.loginbox .lis li input{
+	border:0px;
+	font-size: 0.6rem;
+	color: #ccc;
+}
+.loginbox .lis li input:focus{
+	outline: none;
+}
+.loginbox .lis .memory{
+	margin-right: 0.32rem;
+}
+.loginbox .lis .memory input{
+	border:1px solid #ccc;
+}
+.loginbox .submitbox{
+	width: 100%;
+	height: 2.15rem;
+	text-align: center;
+}
+#submit1{
+	width: 10.45rem;
+	height: 2.15rem;
+	border-radius: 0.17rem;
+	background: #3db6ff;
+	color: #fff;
+    font-size: 0.77rem; 
+    border:0px;   
+    letter-spacing:0.17rem;
+}

@@ -1,0 +1,130 @@
+.head{
+    background: #fff;
+}
+.contentbox{
+	margin-top: 0.43rem;
+	padding-top: 0.43rem;
+}
+.listbox{
+	padding-left: 0.43rem;
+	padding-right: 0.43rem;
+	height: 6.02rem;
+	background: #fff;
+	margin-bottom: 0.43rem;
+}
+.list-title{
+	overflow: hidden;
+	height: 1.88rem;
+	line-height: 1.88rem;
+	border-bottom: 1px solid #ccc;
+	font-size: 0.6rem;
+}
+.list-title li{
+	float: left;
+}
+.list-title .zhuangtai{
+	float: right;
+}
+
+.list-content{
+	padding-top: 0.53rem;
+	padding-bottom: 0.53rem; 
+	overflow: hidden;
+}
+.list-content .list-photo{
+	float: left;
+	text-align: center;
+	width:2.3rem;
+	margin-right: 0.32rem;
+	overflow: hidden;
+}
+.list-content .list-photo .photo{
+	width: 2.3rem;
+	height: 2.3rem;
+	border-radius: 50%;
+	overflow: hidden;
+	background: #83bce6;
+	font-size: 0.55rem;
+}
+.list-content .list-photo .photo img{
+	width: 2.3rem;
+	height: 2.3rem;
+}
+.list-content .list-con{
+	width: 12.52rem;
+	padding-top: 0.38rem;
+	float: right;
+	font-size: 0.55rem;
+	color: #666;
+	line-height: 1.5em;
+}
+.list-content .list-con li{
+	overflow: hidden;
+}
+.list-content .list-con p{
+	float: left;
+}
+.list-content .list-con div{
+	float: right;
+}
+.list-content .list-con .phone-no{
+	color: #ea5851;
+}
+.list-content .list-con .phone-yes{
+	color: #3db6ff;
+}
+.list-content .list-con .time{
+	margin-top: 0.19rem;
+	color: #999999;
+}
+.list-content .list-con .time span{
+	vertical-align: middle;
+}
+.list-content .list-con .time img{
+	width: 0.43rem;
+	height: 0.43rem;
+	margin-right: 0.21rem;
+	vertical-align: middle;
+}
+
+#wrapper {
+	position:absolute; z-index:1;
+	top:1.48rem; bottom:2.05rem; left:0;
+	overflow:auto;
+	width: 100%;
+}
+
+#scroller {
+	position:relative;
+	float:left;
+	width:100%;
+	padding:0;
+}
+
+#scroller ul {
+	position:relative;
+
+}
+
+#no-kehubox{
+	width: 4.86rem;
+	height: 5.08rem;
+	font-size: 0.6rem;
+	color:#999;
+	position: fixed;
+	left: 0;
+	top:0;
+	right: 0;
+	bottom: 0;
+	margin:auto;
+}
+#no-kehu{
+	width: 3.67rem;
+	height: 3.69rem;
+	margin:0 auto;
+	background:url(../img/no-kehu.png) no-repeat center 0;
+	background-size: 3.67rem 3.69rem;
+}
+
+
+

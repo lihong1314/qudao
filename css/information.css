@@ -1,0 +1,98 @@
+
+.todyxiaoyi{
+	padding:0.43rem;
+	overflow: hidden;
+	margin-top: 1.88rem;
+	color: #fff;
+	text-align: center;
+	line-height:2em;
+	background: #f8f8f8 url(../img/shouyi-bg.png) no-repeat 0 1.28rem;
+	background-size:16.0rem 10.92rem; 
+}
+.todyxiaoyi .tody-i{
+	float: left;
+	width: 7.36rem;
+	/* height: 9.94rem; */
+	border-radius: 0.17rem;
+	padding-top: 1.6rem;
+	padding-bottom: 1.11rem;
+}
+.todyxiaoyi .todyshouyi{
+	background:-webkit-gradient(linear, 0 0, 0 bottom, from(#5bc6b3), to(#4fa9bb));
+	background:-moz-linear-gradient(top,#5bc6b3, #4fa9bb);
+	margin-right: 0.41rem;
+	box-shadow: 0 0.11rem 0.32rem rgba(79,180,170,0.5);
+}
+.todyxiaoyi .todychengdan{
+	background:-webkit-gradient(linear, 0 0, 0 bottom, from(#9b7cf5), to(#726dd4));
+	background:-moz-linear-gradient(top, #9b7cf5,#726dd4);
+	box-shadow: 0 0.11rem 0.32rem rgba(115,109,213,0.5);
+}
+.todyxiaoyi h2,.todyxiaoyi h1,.todyxiaoyi h3{
+	font-weight: normal;
+}
+.todyxiaoyi h2{
+	font-size:0.55rem;
+}
+.todyxiaoyi h1{
+	margin-bottom: 0.3rem;
+	margin-top: 0.3rem;
+	font-size: 1.28rem;
+	/* 
+	 */
+}
+.todyxiaoyi h3{
+	font-size: 0.47rem;
+}
+.todyxiaoyi h3.num{
+	font-size: 0.55rem;
+}
+.todyxiaoyi .line{
+	width: 5.31rem;
+	height: 1px;
+	background: rgba(255,255,255,0.6);
+	margin:0.45rem auto;
+}
+
+
+.kehu{
+	width: 15.15rem;
+	margin:0 0.43rem 0.55rem 0.43rem;
+	height: 4.61rem;
+	border-radius: 0.17rem;
+	background: #fff;
+	overflow: hidden;
+}
+.kehu2{
+	margin-bottom: 2.52rem;
+}
+.kehu .todykehu{
+	float: left;
+	padding:0.58rem 0.87rem 0 0.87rem;
+	width: 5.83rem;
+	line-height: 1.5em;
+}
+.kehu .todykehu li{
+	float: left;
+	text-align: center;
+	line-height: 0.94rem;
+}
+.kehu .todykehu li img{
+	width: 0.94rem;
+	height: 0.73rem;
+	margin-right: 0.49rem;
+}
+.kehu .todykehu li h3{
+	color: #9fa2ad;
+	font-weight: normal;
+}
+.kehu .todykehu li h2{
+	color: #5e6376;
+	font-weight: normal;
+	font-size: 0.64rem;/* 
+	margin-bottom: 0.73rem */
+}
+
+
+
+

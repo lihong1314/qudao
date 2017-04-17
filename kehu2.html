@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<title></title>
+	<script src="js/rem.js"></script>
+	<link rel="stylesheet" href="css/public.css">
+	<link rel="stylesheet" href="css/head.css">
+	<link rel="stylesheet" href="css/kehu.css">
+	<script type="application/javascript" src="js/iscroll.js"></script>
+	<script type="text/javascript">
+
+var myScroll,
+	pullDownEl, pullDownOffset,
+	pullUpEl, pullUpOffset,
+	generatedCount = 0;
+
+/**
+ * 下拉刷新 （自定义实现此方法）
+ * myScroll.refresh();		// 数据加载完成后，调用界面更新方法
+ */
+function newcard(i){
+	var card='<div class="listbox">'+
+				'<ul class="list-title">'+
+					'<li>2017-3-20 16:00（课前已处理）</li>'+
+					'<li class="zhuangtai zhuangtai-no">待签约</li>'+
+				'</ul>'+
+				'<div class="list-content">'+
+					'<div class="list-photo">'+
+						'<div class="photo">'+
+							'<img src="" alt="">'+
+						'</div>'+
+						'<p>张三'+i+'</p>'+
+					'</div>'+
+					'<ul class="list-con">'+
+						'<li>'+
+						    '<p>电话: 13300008876 </p>'+
+						    '<div class="phone-no">未接通</div>'+
+						'</li>'+
+						'<li>'+
+						    '<p>调试: 2017-3-10 17:45</p>'+ 
+						    '<div class="phone-no">失败 </div>'+
+						'</li>'+
+						'<li class="time">'+
+							'<p>'+
+							    '<img src="img/uptime.png" alt="">'+
+	                            '<span>2017-3-8 17:00</span>'+
+							'</p>'+
+							'<div>'+
+							    '<img src="img/nowtime.png" alt="">'+
+							    '<span>2017-3-8 17:00</span>'+
+							'</div>'+
+						'</li>'+
+					'</ul>'+
+				'</div>'+
+			'</div>';
+	return card;
+}
+
+function pullDownAction () {
+	setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+		var el, li, i;
+		el = document.getElementById('thelist');
+
+		for (i=0; i<3; i++) {
+			li = document.createElement('li');
+			li.innerHTML = newcard(i);
+			el.insertBefore(li, el.childNodes[0]);
+		}
+		
+		myScroll.refresh();		//数据加载完成后，调用界面更新方法   Remember to refresh when contents are loaded (ie: on ajax completion)
+	}, 1000);	// <-- Simulate network congestion, remove setTimeout from production!
+}
+
+/**
+ * 滚动翻页 （自定义实现此方法）
+ * myScroll.refresh();		// 数据加载完成后，调用界面更新方法
+ */
+function pullUpAction () {
+	setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+		var el, li, i;
+		el = document.getElementById('thelist');
+
+		for (i=0; i<3; i++) {
+			li = document.createElement('li');
+			li.innerHTML = newcard(i);
+			el.appendChild(li, el.childNodes[0]);
+		}
+		
+		myScroll.refresh();		// 数据加载完成后，调用界面更新方法 Remember to refresh when contents are loaded (ie: on ajax completion)
+	}, 1000);	// <-- Simulate network congestion, remove setTimeout from production!
+}
+
+/**
+ * 初始化iScroll控件
+ */
+function loaded() {
+	pullDownEl = document.getElementById('pullDown');
+	pullDownOffset = pullDownEl.offsetHeight;
+	pullUpEl = document.getElementById('pullUp');	
+	pullUpOffset = pullUpEl.offsetHeight;
+	
+	myScroll = new iScroll('wrapper', {
+		scrollbarClass: 'myScrollbar', /* 重要样式 */
+		useTransition: false, /* 此属性不知用意，本人从true改为false */
+		topOffset: pullDownOffset,
+		onRefresh: function () {
+			if (pullDownEl.className.match('loading')) {
+				pullDownEl.className = '';
+				pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+			} else if (pullUpEl.className.match('loading')) {
+				pullUpEl.className = '';
+				//pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+			}
+		},
+		onScrollMove: function () {
+			if (this.y > 5 && !pullDownEl.className.match('flip')) {
+				pullDownEl.className = 'flip';
+				pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+				this.minScrollY = 0;
+			} else if (this.y < 5 && pullDownEl.className.match('flip')) {
+				pullDownEl.className = '';
+				pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+				this.minScrollY = -pullDownOffset;
+			} else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+				pullUpEl.className = 'flip';
+				//pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+				this.maxScrollY = this.maxScrollY;
+			} else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+				pullUpEl.className = '';
+				//pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+				this.maxScrollY = pullUpOffset;
+			}
+		},
+		onScrollEnd: function () {
+			if (pullDownEl.className.match('flip')) {
+				pullDownEl.className = 'loading';
+				pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';				
+				pullDownAction();	// Execute custom function (ajax call?)
+			} else if (pullUpEl.className.match('flip')) {
+				pullUpEl.className = 'loadingup';
+				//pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';				
+				pullUpAction();	// Execute custom function (ajax call?)
+			}
+		}
+	});
+	
+	setTimeout(function () { document.getElementById('wrapper').style.left = '0'; }, 800);
+}
+
+//初始化绑定iScroll控件 
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+document.addEventListener('DOMContentLoaded', loaded, false); 
+
+</script>
+</head>
+<body>
+    <div class="head">
+    	<ul>
+			<li class="head-left"><img class="logo" src="img/logo.png" alt=""></li>
+			<li class="head-right"><img src="img/exit.png" alt=""></li>
+			<li class="head-right" id="xiugaibtn"><img src="img/xiugai.png" alt=""></li>
+		</ul>
+    </div>
+	
+
+<div id="wrapper">
+	<div id="scroller">
+		<div id="pullDown">
+			<span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+		</div>
+
+		<ul id="thelist" class="contentbox">
+			<li>
+			    <!-- 卡片 -->
+				<div class="listbox">
+					<ul class="list-title">
+						<li>2017-3-20 16:00（课前已处理）</li>
+						<li class="zhuangtai zhuangtai-no">待签约</li>
+					</ul>
+					<div class="list-content">
+						<div class="list-photo">
+							<div class="photo">
+								<img src="" alt="">
+							</div>
+							<p>张三</p>
+						</div>
+						<ul class="list-con">
+							<li>
+							    <p>电话: 13300008876 </p>
+							    <div class="phone-no">未接通</div>
+							</li>
+							<li>
+							    <p>调试: 2017-3-10 17:45</p> 
+							    <div class="phone-no">失败 </div>
+							</li>
+							<li class="time">
+								<p>
+								    <img src="img/uptime.png" alt="">
+		                            <span>2017-3-8 17:00</span>
+								</p>
+								<div>
+								    <img src="img/nowtime.png" alt="">
+								    <span>2017-3-8 17:00</span>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</li>
+			<li>
+			    <!-- 卡片 -->
+				<div class="listbox">
+					<ul class="list-title">
+						<li>2017-3-20 16:00（课前已处理）</li>
+						<li class="zhuangtai zhuangtai-no">待签约</li>
+					</ul>
+					<div class="list-content">
+						<div class="list-photo">
+							<div class="photo">
+								<img src="" alt="">
+							</div>
+							<p>张三</p>
+						</div>
+						<ul class="list-con">
+							<li>
+							    <p>电话: 13300008876 </p>
+							    <div class="phone-no">未接通</div>
+							</li>
+							<li>
+							    <p>调试: 2017-3-10 17:45</p> 
+							    <div class="phone-no">失败 </div>
+							</li>
+							<li class="time">
+								<p>
+								    <img src="img/uptime.png" alt="">
+		                            <span>2017-3-8 17:00</span>
+								</p>
+								<div>
+								    <img src="img/nowtime.png" alt="">
+								    <span>2017-3-8 17:00</span>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</li>
+		</ul>
+
+        <div id="pullUp">
+			<img src="img/break.jpg" alt="">
+		</div>
+	</div>
+</div>
+
+	<!-- <div class="contentbox">
+	    卡片
+		<div class="listbox">
+			<ul class="list-title">
+				<li>2017-3-20 16:00（课前已处理）</li>
+				<li class="zhuangtai zhuangtai-no">待签约</li>
+			</ul>
+			<div class="list-content">
+				<div class="list-photo">
+					<div class="photo">
+						<img src="" alt="">
+					</div>
+					<p>张三</p>
+				</div>
+				<ul class="list-con">
+					<li>
+					    <p>电话: 13300008876 </p>
+					    <div class="phone-no">未接通</div>
+					</li>
+					<li>
+					    <p>调试: 2017-3-10 17:45</p> 
+					    <div class="phone-no">失败 </div>
+					</li>
+					<li class="time">
+						<p>
+						    <img src="img/uptime.png" alt="">
+	                            <span>2017-3-8 17:00</span>
+						</p>
+						<div>
+						    <img src="img/nowtime.png" alt="">
+						    <span>2017-3-8 17:00</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div> -->
+	
+    
+
+    <footer>
+    	<ul>
+    		<li class="information"></li>
+    		<li class="line"></li>
+    		<li class="caidan-active"></li>
+    	</ul>
+    </footer>
+
+    <div class="zhezhao" id="zhezhao">
+        <form action="" method="post">
+	    	<div class="psxiugai">
+	    	    <h2>修改密码</h2>
+	    	    <ul>
+		    		<li><img src="img/ps.png" alt=""></li>
+		    		<li><input type="password" name="ps" placeholder="输入旧密码" ></li>
+	    	    </ul>
+	    	    <ul>
+		    		<li><img src="img/ps2.png" alt=""></li>
+		    		<li><input type="password" name="ps2" placeholder="输入新密码" ></li>
+	    	    </ul>
+	    	    <ul>
+		    		<li><img src="img/ps2.png" alt=""></li>
+		    		<li><input type="password" name="ps2" placeholder="确认新密码" ></li>
+	    	    </ul>
+	    	    <div class="submitbox">
+	    	        <input id="submit1" type="submit" value='修改密码'>
+	    	    </div>
+	    	</div>
+    	</form>
+    	<div class="zhezhaobox"></div>
+    </div>
+</body>
+<script src="js/jquery-3.2.0.js"></script>
+<script>
+	$(document).ready(function(){
+		$("#xiugaibtn").click(function(){
+			$("#zhezhao").fadeIn('slow/400/fast', function() {
+				
+			});(300);
+		})
+		$(".zhezhaobox").click(function(){
+			$("#zhezhao").fadeOut('slow/400/fast', function() {
+				
+			});(300);
+		})
+	})
+</script>
+</html>
